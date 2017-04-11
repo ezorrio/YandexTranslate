@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Yandex Translate</string>
+    <string name="translate">Translate</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="history">History</string>
+    <string name="hint_translate">Input text to translate</string>
+    <string name="text_to_translate">Text to translate</string>
+    <string name="result">Result</string>
+    <string name="see_results_here">You will see results here</string>
+
+
+</resources>
