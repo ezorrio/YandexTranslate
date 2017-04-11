@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.R;
 import io.ezorrio.yandextranslate.adapter.BookmarksAdapter;
 import io.ezorrio.yandextranslate.db.repos.BookmarksRepository;
@@ -41,7 +42,7 @@ public class BookmarksFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mData = BookmarksRepository.getInstance(getActivity()).getBookmarks();
+        mData = App.getBookmarkRepository().getBookmarks();
     }
 
     @Nullable
@@ -58,7 +59,7 @@ public class BookmarksFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        mData = BookmarksRepository.getInstance(getContext()).getBookmarks();
+        mData = App.getBookmarkRepository().getBookmarks();
         mAdapter = new BookmarksAdapter(getContext(), mData);
         mRecyclerView.setAdapter(mAdapter);
     }

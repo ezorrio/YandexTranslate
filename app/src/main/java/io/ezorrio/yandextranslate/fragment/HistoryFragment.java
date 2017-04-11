@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.R;
 import io.ezorrio.yandextranslate.adapter.BookmarksAdapter;
 import io.ezorrio.yandextranslate.adapter.HistoryAdapter;
@@ -38,7 +39,7 @@ public class HistoryFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList data = HistoryRepository.getInstance(getActivity()).getHistory();
+        ArrayList data = App.getHistoryRepository().getHistory();
         mAdapter = new HistoryAdapter(getActivity(), data);
     }
 

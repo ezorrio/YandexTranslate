@@ -37,14 +37,14 @@ public class HistoryRepository extends ContextWrapper {
 
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                History bookmark = map(cursor);
+                History bookmark = transformToObject(cursor);
                 history.add(bookmark);
             }
         }
         return history;
     }
 
-    private History map(@NonNull Cursor cursor){
+    private History transformToObject(@NonNull Cursor cursor){
         return new History(cursor.getInt(cursor.getColumnIndex(HistoryColumns._ID)),
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.ORIGINAL_DATA)),
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.ORIGINAL_LANGUAGE)),

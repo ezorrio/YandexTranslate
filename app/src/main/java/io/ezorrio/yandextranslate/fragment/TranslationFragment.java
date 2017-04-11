@@ -81,7 +81,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_bookmark:
-                BookmarksRepository.getInstance(getActivity()).saveBookmark(
+                App.getBookmarkRepository().saveBookmark(
                         new Bookmark(0, mTranslateInput.getText().toString(),
                                 "en", mPrimaryTranslation.getText().toString(), "ru"));
                 break;
