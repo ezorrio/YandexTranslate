@@ -4,38 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="100">
+    android:weightSum="100"
+    android:animateLayoutChanges="true">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentPadding="8dp"
-        app:elevation="5dp"
         app:cardBackgroundColor="?colorPrimary"
-        app:cardCornerRadius="0dp">
+        app:cardCornerRadius="0dp"
+        app:contentPadding="8dp"
+        app:elevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="12dp">
+            android:layout_marginLeft="12dp"
+            android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/input_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?colorAccent"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="14sp"/>
+                android:layout_centerVertical="true"
+                android:textColor="?colorAccent"
+                android:textSize="14sp" />
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/result_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?colorPrimary"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"/>
+                android:textColor="?colorPrimary" />
 
         </RelativeLayout>
 
@@ -44,17 +45,17 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="1dp"
         android:layout_weight="30"
-        app:contentPadding="8dp"
-        app:elevation="5dp"
         app:cardCornerRadius="0dp"
-        android:layout_margin="1dp">
+        app:contentPadding="8dp"
+        app:elevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="12dp">
+            android:layout_marginLeft="12dp"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -64,20 +65,20 @@
                     android:id="@+id/input_lang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:textColorPrimary"
                     android:layout_centerVertical="true"
-                    android:textSize="14sp"
-                    android:text="Detect language"/>
+                    android:text="Detect language"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="14sp" />
 
                 <ImageButton
+                    android:id="@+id/delete_input"
+                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:src="@drawable/ic_close"
-                    android:id="@+id/delete_input"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:layout_alignParentRight="true"
-                    style="@style/Widget.AppCompat.Button.Borderless"/>
+                    android:src="@drawable/ic_close" />
 
             </RelativeLayout>
 
@@ -85,10 +86,10 @@
                 android:id="@+id/input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:background="@android:color/transparent"
                 android:gravity="top|left"
                 android:hint="@string/hint_translate"
-                android:layout_marginTop="4dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         </LinearLayout>
@@ -96,39 +97,39 @@
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/primary_translation_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
-        app:contentPadding="8dp"
-        app:elevation="5dp"
-        app:cardCornerRadius="0dp"
         android:layout_margin="1dp"
+        android:layout_weight="30"
+        android:visibility="gone"
         app:cardBackgroundColor="?colorAccent"
-        android:id="@+id/primary_translation_holder"
-        android:visibility="gone">
+        app:cardCornerRadius="0dp"
+        app:contentPadding="8dp"
+        app:elevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="12dp">
+            android:layout_marginLeft="12dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/result_lang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?android:textColorPrimaryInverse"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:textColor="?android:textColorPrimaryInverse" />
 
             <TextView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
                 android:text="@string/see_results_here"
-                android:textColor="?android:textColorSecondaryInverse"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textIsSelectable="true"
-                android:layout_marginTop="4dp"/>
+                android:textColor="?android:textColorSecondaryInverse"
+                android:textIsSelectable="true" />
 
         </LinearLayout>
 

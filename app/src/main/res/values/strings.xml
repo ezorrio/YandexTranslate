@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yandex Translate</string>
+    <string name="app_name">Translator</string>
     <string name="translate">Translate</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="history">History</string>
