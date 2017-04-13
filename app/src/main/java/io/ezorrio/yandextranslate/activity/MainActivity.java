@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_translate);
         mainFragment = TranslationFragment.newInstance();
         setPage(0);
     }

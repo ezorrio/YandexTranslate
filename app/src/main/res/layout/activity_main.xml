@@ -12,6 +12,7 @@
         android:elevation="0dp"
         android:background="?colorPrimary"
         android:title="@string/app_name"
+        android:navigationIcon="@drawable/ic_translate"
         style="@style/Widget.AppCompat.Toolbar"/>
 
     <android.support.design.widget.BottomNavigationView
