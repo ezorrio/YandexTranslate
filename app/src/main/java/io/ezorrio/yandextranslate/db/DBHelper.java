@@ -8,6 +8,7 @@ import android.util.Log;
 
 import io.ezorrio.yandextranslate.db.columns.BookmarkColumns;
 import io.ezorrio.yandextranslate.db.columns.HistoryColumns;
+import io.ezorrio.yandextranslate.db.columns.LanguageColumns;
 
 /**
  * Created by golde on 10.04.2017.
@@ -32,6 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createBookmarks(db);
         createHistory(db);
+        createLanguages(db);
         Log.d(TAG, "Created tables!");
     }
 
@@ -59,4 +61,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "  [" + HistoryColumns.TRANSLATED_LANGUAGE + "] TEXT);";
         db.execSQL(sql);
     }
+    private void createLanguages(SQLiteDatabase db) {
+        String sql = "CREATE TABLE IF NOT EXISTS [" + LanguageColumns.TABLENAME + "] (\n" +
+                "  [" + LanguageColumns._ID + "] TEXT PRIMARY KEY, " +
+                "  [" + LanguageColumns.LANG + "] TEXT);";
+        db.execSQL(sql);
+    }
+
 }

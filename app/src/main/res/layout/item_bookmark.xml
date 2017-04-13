@@ -9,23 +9,39 @@
     app:cardCornerRadius="0dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/line_one"
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_star"
+            android:padding="12dp"
+            android:tint="?colorAccent"/>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#000"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp">
 
-        <TextView
-            android:id="@+id/line_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"/>
+            <TextView
+                android:id="@+id/line_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?colorAccent"/>
 
+            <TextView
+                android:id="@+id/line_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp"
+                android:textColor="?android:textColorSecondary"/>
+
+        </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

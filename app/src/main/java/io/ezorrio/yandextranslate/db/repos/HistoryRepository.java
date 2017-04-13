@@ -4,13 +4,14 @@ import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import io.ezorrio.yandextranslate.db.columns.BookmarkColumns;
 import io.ezorrio.yandextranslate.db.columns.HistoryColumns;
 import io.ezorrio.yandextranslate.model.History;
 import io.ezorrio.yandextranslate.provider.AppContentProvider;
@@ -31,7 +32,7 @@ public class HistoryRepository extends ContextWrapper {
 
     public ArrayList<History> getHistory() {
         Uri uri = AppContentProvider.getHistoryContentUri();
-        Cursor cursor = getContentResolver().query(uri, null, null, null, BookmarkColumns._ID + " DESC");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, HistoryColumns._ID + " DESC");
 
         ArrayList<History> history = new ArrayList<>();
 
@@ -52,7 +53,7 @@ public class HistoryRepository extends ContextWrapper {
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.TRANSLATED_LANGUAGE)));
     }
 
-    public static void saveHistoryList(ArrayList<History> data) {
+    public void saveHistoryList(ArrayList<History> data) {
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
@@ -64,11 +65,16 @@ public class HistoryRepository extends ContextWrapper {
                     .build();
             operations.add(operation);
         }
-        AppContentProvider provider = new AppContentProvider();
-        provider.applyBatch(operations);
+        try {
+            getContentResolver().applyBatch(AppContentProvider.AUTHORITY, operations);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void saveHistory(History data){
+    public void saveHistory(History data){
         ArrayList list = new ArrayList<>();
         list.add(data);
         saveHistoryList(list);

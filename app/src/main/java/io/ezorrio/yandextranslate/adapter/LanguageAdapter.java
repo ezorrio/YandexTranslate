@@ -10,7 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import io.ezorrio.yandextranslate.R;
+import io.ezorrio.yandextranslate.model.Language;
 import io.ezorrio.yandextranslate.model.api.TranslationDirs;
 
 /**
@@ -19,26 +22,24 @@ import io.ezorrio.yandextranslate.model.api.TranslationDirs;
 
 public class LanguageAdapter extends BaseAdapter implements SpinnerAdapter {
     private Context mContext;
-    private TranslationDirs mData;
-    private String[] mKeys;
+    private ArrayList<Language> mData;
 
-    public LanguageAdapter(Context context, @NonNull TranslationDirs data, boolean canDetect){
+    public LanguageAdapter(Context context, ArrayList<Language> data, boolean canDetect){
         this.mContext = context;
         this.mData = data;
         if (canDetect){
-            mData.getLangs().put("auto", "Detect language");
+            mData.add(0, new Language("auto", "Detect language"));
         }
-        this.mKeys = mData.getLangs().keySet().toArray(new String[data.getLangs().size()]);
     }
 
     @Override
     public int getCount() {
-        return mData.getLangs().size();
+        return mData.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mData.getLangs().get(mKeys[position]) + " (" + mKeys[position].toUpperCase() + ")";
+        return mData.get(position).getLang();
     }
 
     @Override

@@ -60,7 +60,6 @@ public class BookmarksFragment extends Fragment{
     public void onResume() {
         super.onResume();
         mData = App.getBookmarkRepository().getBookmarks();
-        mAdapter = new BookmarksAdapter(getContext(), mData);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }

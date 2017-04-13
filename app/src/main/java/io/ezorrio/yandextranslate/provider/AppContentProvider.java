@@ -23,6 +23,7 @@ import java.util.Map;
 import io.ezorrio.yandextranslate.db.DBHelper;
 import io.ezorrio.yandextranslate.db.columns.BookmarkColumns;
 import io.ezorrio.yandextranslate.db.columns.HistoryColumns;
+import io.ezorrio.yandextranslate.db.columns.LanguageColumns;
 
 /**
  * Created by golde on 10.04.2017.
@@ -34,6 +35,7 @@ public class AppContentProvider extends ContentProvider {
 
     private static Map<String, String> sHistoryProjectionMap;
     private static Map<String, String> sBookmarkProjectionMap;
+    private static Map<String, String> sLanguageProjectionMap;
 
     public static final String AUTHORITY = "io.ezorrio.yandextranslate" + ".providers.AppAuthority";
 
@@ -41,9 +43,12 @@ public class AppContentProvider extends ContentProvider {
     static final int URI_HISTORY_ID = 2;
     static final int URI_BOOKMARKS = 3;
     static final int URI_BOOKMARKS_ID = 4;
+    static final int URI_LANGUAGES = 5;
+    static final int URI_LANGUAGES_ID = 6;
 
     static final String HISTORY_PATH = "history";
     static final String BOOKMARK_PATH = "bookmark";
+    static final String LANGUAGE_PATH = "language";
 
     private static final UriMatcher sUriMatcher;
 
@@ -53,6 +58,8 @@ public class AppContentProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, HISTORY_PATH + "/#", URI_HISTORY_ID);
         sUriMatcher.addURI(AUTHORITY, BOOKMARK_PATH, URI_BOOKMARKS);
         sUriMatcher.addURI(AUTHORITY, BOOKMARK_PATH + "/#", URI_BOOKMARKS_ID);
+        sUriMatcher.addURI(AUTHORITY, LANGUAGE_PATH, URI_LANGUAGES);
+        sUriMatcher.addURI(AUTHORITY, LANGUAGE_PATH + "/#", URI_LANGUAGES_ID);
     }
     
     static {
@@ -70,6 +77,10 @@ public class AppContentProvider extends ContentProvider {
         sHistoryProjectionMap.put(HistoryColumns.ORIGINAL_LANGUAGE, HistoryColumns.FULL_ORIGINAL_LANGUAGE);
         sHistoryProjectionMap.put(HistoryColumns.TRANSLATED_DATA, HistoryColumns.FULL_TRANSLATED_DATA);
         sHistoryProjectionMap.put(HistoryColumns.TRANSLATED_LANGUAGE, HistoryColumns.FULL_TRANSLATED_LANGUAGE);
+
+        sLanguageProjectionMap = new HashMap<>();
+        sLanguageProjectionMap.put(LanguageColumns._ID, LanguageColumns.FULL_ID);
+        sLanguageProjectionMap.put(LanguageColumns.LANG, LanguageColumns.FULL_LANG);
     }
 
     private static final Uri HISTORY_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + HISTORY_PATH);
@@ -80,12 +91,20 @@ public class AppContentProvider extends ContentProvider {
     static final String BOOKMARK_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + BOOKMARK_PATH;
     static final String BOOKMARK_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + BOOKMARK_PATH;
 
+    private static final Uri LANGUAGE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + LANGUAGE_PATH);
+    static final String LANGUAGE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + LANGUAGE_PATH;
+    static final String LANGUAGE_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd." + AUTHORITY + "." + LANGUAGE_PATH;
+
     public static Uri getBookmarkContentUri(){
         return BOOKMARK_CONTENT_URI;
     }
 
     public static Uri getHistoryContentUri(){
         return HISTORY_CONTENT_URI;
+    }
+
+    public static Uri getLanguageContentUri(){
+        return LANGUAGE_CONTENT_URI;
     }
 
     @Override
@@ -144,6 +163,16 @@ public class AppContentProvider extends ContentProvider {
                 _QB.setProjectionMap(sHistoryProjectionMap);
                 _QB.appendWhere(HistoryColumns.FULL_ID + "=" + uri.getPathSegments().get(1));
                 break;
+            case URI_LANGUAGES:
+                _QB.setTables(LanguageColumns.TABLENAME);
+                _QB.setProjectionMap(sLanguageProjectionMap);
+                break;
+
+            case URI_LANGUAGES_ID:
+                _QB.setTables(LanguageColumns.TABLENAME);
+                _QB.setProjectionMap(sLanguageProjectionMap);
+                _QB.appendWhere(LanguageColumns.FULL_ID + "=" + uri.getPathSegments().get(1));
+                break;
         }
 
         // Get the database and run the query
@@ -170,6 +199,10 @@ public class AppContentProvider extends ContentProvider {
                 return HISTORY_CONTENT_TYPE;
             case URI_HISTORY_ID:
                 return HISTORY_CONTENT_ITEM_TYPE;
+            case URI_LANGUAGES:
+                return LANGUAGE_CONTENT_TYPE;
+            case URI_LANGUAGES_ID:
+                return LANGUAGE_CONTENT_ITEM_TYPE;
         }
         return null;
     }
@@ -190,6 +223,10 @@ public class AppContentProvider extends ContentProvider {
             case URI_HISTORY:
                 rowId = db.insert(HistoryColumns.TABLENAME, null, values);
                 result = ContentUris.withAppendedId(HISTORY_CONTENT_URI, rowId);
+                break;
+            case URI_LANGUAGES:
+                rowId = db.insert(LanguageColumns.TABLENAME, null, values);
+                result = ContentUris.withAppendedId(LANGUAGE_CONTENT_URI, rowId);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -221,6 +258,20 @@ public class AppContentProvider extends ContentProvider {
                 }
                 tbName = BookmarkColumns.TABLENAME;
                 break;
+
+            case URI_HISTORY:
+                tbName = HistoryColumns.TABLENAME;
+                break;
+            case URI_HISTORY_ID:
+                String id1 = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) {
+                    selection = HistoryColumns._ID + " = " + id1;
+                } else {
+                    selection = selection + " AND " + HistoryColumns._ID + " = " + id1;
+                }
+                tbName = HistoryColumns.TABLENAME;
+                break;
+
             default:
                 throw new IllegalArgumentException("Wrong URI: " + uri);
         }
