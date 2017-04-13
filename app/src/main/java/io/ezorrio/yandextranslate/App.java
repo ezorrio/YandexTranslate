@@ -30,9 +30,9 @@ public class App extends Application {
         mHistoryRepo = HistoryRepository.getInstance(this);
         mLanguageRepo = LanguageRepository.getInstance(this);
 
-//      if (mLanguageRepo.getLanguages().isEmpty()){
+        if (mLanguageRepo.getLanguages().isEmpty()){
             mApiHelper.getLanguagesAndSave(this);
- //     }
+        }
     }
 
     public static ApiHelper getApiHelper() {

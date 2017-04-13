@@ -2,7 +2,6 @@ package io.ezorrio.yandextranslate.fragment;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +29,7 @@ import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.R;
 import io.ezorrio.yandextranslate.adapter.LanguageAdapter;
 import io.ezorrio.yandextranslate.model.Bookmark;
+import io.ezorrio.yandextranslate.model.History;
 import io.ezorrio.yandextranslate.model.Language;
 
 
@@ -36,15 +37,16 @@ import io.ezorrio.yandextranslate.model.Language;
  * Created by golde on 28.03.2017.
  */
 
-public class TranslationFragment extends Fragment implements TextWatcher, AdapterView.OnItemSelectedListener, View.OnTouchListener {
+public class TranslationFragment extends Fragment implements TextWatcher, AdapterView.OnItemSelectedListener, View.OnTouchListener, View.OnClickListener {
     private String TAG = getClass().getSimpleName();
-    private ViewGroup mPrimaryTranslationCard;
+    private ViewGroup mTranslationHolder;
     private TextView mInputLang;
     private TextView mTranslationLang;
-    private EditText mTranslateInput;
-    private TextView mPrimaryTranslation;
-    private Spinner mTranslateInputSpinner;
-    private Spinner mPrimaryTranslationSpinner;
+    private EditText mInput;
+    private TextView mTranslation;
+    private Spinner mInputSpinner;
+    private Spinner mTranslationSpinner;
+    private ImageButton mErase;
     private ArrayList<Language> mLanguages;
 
     public static TranslationFragment newInstance() {
@@ -66,13 +68,15 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
 
         mInputLang = (TextView)  root.findViewById(R.id.input_lang);
         mTranslationLang = (TextView) root.findViewById(R.id.result_lang);
-        mPrimaryTranslationCard = (ViewGroup) root.findViewById(R.id.primary_translation_holder);
-        mPrimaryTranslation = (TextView) root.findViewById(R.id.result);
-        mPrimaryTranslationSpinner = (Spinner) root.findViewById(R.id.result_header);
-        mTranslateInputSpinner = (Spinner) root.findViewById(R.id.input_header);
+        mTranslationHolder = (ViewGroup) root.findViewById(R.id.primary_translation_holder);
+        mTranslation = (TextView) root.findViewById(R.id.result);
+        mTranslationSpinner = (Spinner) root.findViewById(R.id.result_header);
+        mInputSpinner = (Spinner) root.findViewById(R.id.input_header);
 
-        mTranslateInput = (EditText) root.findViewById(R.id.input);
-        mTranslateInput.addTextChangedListener(this);
+        mInput = (EditText) root.findViewById(R.id.input);
+        mErase = (ImageButton) root.findViewById(R.id.delete_input);
+        mInput.addTextChangedListener(this);
+        mErase.setOnClickListener(this);
         configureSpinners();
         setHasOptionsMenu(true);
         return root;
@@ -88,10 +92,12 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_bookmark:
-                if (!mTranslateInput.getText().toString().isEmpty()) {
+                if (!mInput.getText().toString().isEmpty()) {
                     App.getBookmarkRepository().saveBookmark(
-                            new Bookmark(0, mTranslateInput.getText().toString(),
-                                    "en", mPrimaryTranslation.getText().toString(), "ru"));
+                            new Bookmark(0, mInput.getText().toString(),
+                                    mInputLang.getText().toString(),
+                                    mTranslation.getText().toString(),
+                                    mTranslationLang.getText().toString()));
                 } else {
                     Toast.makeText(getContext(), "Can\'t save empty bookmark", Toast.LENGTH_SHORT).show();
                 }
@@ -101,18 +107,18 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     }
 
     private void configureSpinners() {
-        if (mTranslateInputSpinner.getAdapter() == null || mPrimaryTranslationSpinner.getAdapter() == null) {
+        if (mInputSpinner.getAdapter() == null || mTranslationSpinner.getAdapter() == null) {
             mLanguages = App.getLanguageRepository().getLanguages();
             LanguageAdapter adapter = new LanguageAdapter(getContext(), mLanguages, true);
             LanguageAdapter adapter1 = new LanguageAdapter(getContext(), mLanguages, false);
-            mTranslateInputSpinner.setAdapter(adapter);
-            mPrimaryTranslationSpinner.setAdapter(adapter1);
+            mInputSpinner.setAdapter(adapter);
+            mTranslationSpinner.setAdapter(adapter1);
         }
-        mPrimaryTranslationSpinner.setSelection(17);
-        mTranslateInputSpinner.setOnItemSelectedListener(this);
-        mPrimaryTranslationSpinner.setOnItemSelectedListener(this);
-        mTranslateInputSpinner.setOnTouchListener(this);
-        mPrimaryTranslationSpinner.setOnTouchListener(this);
+        mTranslationSpinner.setSelection(17);
+        mInputSpinner.setOnItemSelectedListener(this);
+        mTranslationSpinner.setOnItemSelectedListener(this);
+        mInputSpinner.setOnTouchListener(this);
+        mTranslationSpinner.setOnTouchListener(this);
     }
 
     @Override
@@ -123,15 +129,15 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String initialText = s.toString();
         if (initialText.isEmpty()) {
-            mPrimaryTranslation.clearComposingText();
-            mPrimaryTranslationCard.setVisibility(View.GONE);
+            mTranslation.clearComposingText();
+            mTranslationHolder.setVisibility(View.GONE);
             return;
         }
 
         if (isAutoTranslate()){
             App.getApiHelper().detectAsync(getContext(), initialText, mInputLang);
         }
-        mPrimaryTranslationCard.setVisibility(View.VISIBLE);
+        mTranslationHolder.setVisibility(View.VISIBLE);
         translate(initialText);
     }
 
@@ -140,21 +146,21 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     }
 
     public boolean isAutoTranslate(){
-        return mTranslateInputSpinner != null && mTranslateInputSpinner.getSelectedItem().equals("Detect language");
+        return mInputSpinner != null && mInputSpinner.getSelectedItem().equals("Detect language");
     }
 
     private String getTranslationDir() {
-        if (mTranslateInputSpinner.getSelectedItem() == null || mPrimaryTranslationSpinner.getSelectedItem() == null) {
+        if (mInputSpinner.getSelectedItem() == null || mTranslationSpinner.getSelectedItem() == null) {
             return null;
         }
-        String from = getLanguageCode(mTranslateInputSpinner.getSelectedItem().toString());
-        String to = getLanguageCode(mPrimaryTranslationSpinner.getSelectedItem().toString());
+        String from = getLanguageCode(mInputSpinner.getSelectedItem().toString());
+        String to = getLanguageCode(mTranslationSpinner.getSelectedItem().toString());
         return isAutoTranslate() ? to : from + "-" + to;
     }
 
     private void translate(String data) {
         try {
-            App.getApiHelper().translateAsync(data, getTranslationDir(), mPrimaryTranslation);
+            App.getApiHelper().translateAsync(data, getTranslationDir(), mTranslation);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,13 +173,13 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         }
         switch (parent.getId()){
             case R.id.result_header:
-                mTranslationLang.setText(mPrimaryTranslationSpinner.getSelectedItem().toString());
+                mTranslationLang.setText(mTranslationSpinner.getSelectedItem().toString());
                 break;
             case R.id.input_header:
-                mInputLang.setText(mTranslateInputSpinner.getSelectedItem().toString());
+                mInputLang.setText(mInputSpinner.getSelectedItem().toString());
                 break;
         }
-        translate(mTranslateInput.getText().toString());
+        translate(mInput.getText().toString());
     }
 
     @Override
@@ -204,13 +210,27 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         return null;
     }
 
+    @Override
+    public void onClick(View v) {
+        if (mInput.getText().toString().isEmpty()){
+            return;
+        }
+        App.getHistoryRepository().saveHistory(
+                new History(mInput.getText().toString(),
+                        mInputLang.getText().toString(),
+                        mTranslation.getText().toString(),
+                        mTranslationLang.getText().toString()));
+        mInput.getText().clear();
+        mTranslationHolder.setVisibility(View.GONE);
+    }
+
 //    @Override
 //    public void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
-//        outState.putInt("input_lang", mTranslateInputSpinner.getSelectedItemPosition());
-//        outState.putInt("out_lang", mPrimaryTranslationSpinner.getSelectedItemPosition());
-//        outState.putString("input_data", mTranslateInput.getText().toString());
-//        outState.putString("translated_data", mPrimaryTranslation.getText().toString());
+//        outState.putInt("input_lang", mInputSpinner.getSelectedItemPosition());
+//        outState.putInt("out_lang", mTranslationSpinner.getSelectedItemPosition());
+//        outState.putString("input_data", mInput.getText().toString());
+//        outState.putString("translated_data", mTranslation.getText().toString());
 //        outState.putParcelableArrayList("languages", mLanguages);
 //    }
 //
@@ -219,10 +239,10 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
 //        super.onActivityCreated(savedInstanceState);
 //        if (savedInstanceState != null){
 //            mLanguages = savedInstanceState.getParcelableArrayList("languages");
-//            mTranslateInputSpinner.setSelection(savedInstanceState.getInt("input_lang"));
-//            mPrimaryTranslationSpinner.setSelection(savedInstanceState.getInt("out_lang"));
-//            mPrimaryTranslation.setText(savedInstanceState.getString("translated_data"));
-//            mTranslateInput.setText(savedInstanceState.getString("input_data"));
+//            mInputSpinner.setSelection(savedInstanceState.getInt("input_lang"));
+//            mTranslationSpinner.setSelection(savedInstanceState.getInt("out_lang"));
+//            mTranslation.setText(savedInstanceState.getString("translated_data"));
+//            mInput.setText(savedInstanceState.getString("input_data"));
 //        }
 //    }
 }

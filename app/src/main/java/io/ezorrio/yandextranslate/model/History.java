@@ -19,6 +19,13 @@ public class History {
         this.translatedLang = translatedLang;
     }
 
+    public History(String originalData, String originalLang, String translatedData, String translatedLang){
+        this.originalData = originalData;
+        this.originalLang = originalLang;
+        this.translatedData = translatedData;
+        this.translatedLang = translatedLang;
+    }
+
     public int getId() {
         return id;
     }

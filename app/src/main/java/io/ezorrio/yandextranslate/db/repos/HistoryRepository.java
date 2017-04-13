@@ -32,7 +32,7 @@ public class HistoryRepository extends ContextWrapper {
 
     public ArrayList<History> getHistory() {
         Uri uri = AppContentProvider.getHistoryContentUri();
-        Cursor cursor = getContentResolver().query(uri, null, null, null, HistoryColumns._ID + " DESC");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, HistoryColumns._ID + " ASC");
 
         ArrayList<History> history = new ArrayList<>();
 
@@ -46,8 +46,7 @@ public class HistoryRepository extends ContextWrapper {
     }
 
     private History transformToObject(@NonNull Cursor cursor){
-        return new History(cursor.getInt(cursor.getColumnIndex(HistoryColumns._ID)),
-                cursor.getString(cursor.getColumnIndex(HistoryColumns.ORIGINAL_DATA)),
+        return new History(cursor.getString(cursor.getColumnIndex(HistoryColumns.ORIGINAL_DATA)),
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.ORIGINAL_LANGUAGE)),
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.TRANSLATED_DATA)),
                 cursor.getString(cursor.getColumnIndex(HistoryColumns.TRANSLATED_LANGUAGE)));
@@ -67,9 +66,7 @@ public class HistoryRepository extends ContextWrapper {
         }
         try {
             getContentResolver().applyBatch(AppContentProvider.AUTHORITY, operations);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (OperationApplicationException e) {
+        } catch (RemoteException | OperationApplicationException e) {
             e.printStackTrace();
         }
     }

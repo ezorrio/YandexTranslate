@@ -56,13 +56,29 @@
             android:orientation="vertical"
             android:layout_marginLeft="12dp">
 
-            <TextView
-                android:id="@+id/input_lang"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?android:textColorPrimary"
-                android:layout_gravity="center"
-                android:textSize="14sp"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/input_lang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="?android:textColorPrimary"
+                    android:layout_centerVertical="true"
+                    android:textSize="14sp"/>
+
+                <ImageButton
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_close"
+                    android:id="@+id/delete_input"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:layout_alignParentRight="true"
+                    style="@style/Widget.AppCompat.Button.Borderless"/>
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/input"
@@ -110,7 +126,8 @@
                 android:text="@string/see_results_here"
                 android:textColor="?android:textColorSecondaryInverse"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textIsSelectable="true"/>
+                android:textIsSelectable="true"
+                android:layout_marginTop="4dp"/>
 
         </LinearLayout>
 
