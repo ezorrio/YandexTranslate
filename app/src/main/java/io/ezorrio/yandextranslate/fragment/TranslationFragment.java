@@ -149,7 +149,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         }
         String from = getLanguageCode(mTranslateInputSpinner.getSelectedItem().toString());
         String to = getLanguageCode(mPrimaryTranslationSpinner.getSelectedItem().toString());
-        return from + "-" + to;
+        return isAutoTranslate() ? to : from + "-" + to;
     }
 
     private void translate(String data) {
