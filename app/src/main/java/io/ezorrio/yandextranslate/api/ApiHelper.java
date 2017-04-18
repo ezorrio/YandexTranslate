@@ -4,7 +4,6 @@ package io.ezorrio.yandextranslate.api;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,13 +12,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import io.ezorrio.yandextranslate.App;
-import io.ezorrio.yandextranslate.adapter.LanguageAdapter;
 import io.ezorrio.yandextranslate.model.Language;
 import io.ezorrio.yandextranslate.model.api.LanguageDetectionResult;
 import io.ezorrio.yandextranslate.model.api.TranslationDirs;
 import io.ezorrio.yandextranslate.model.api.TranslationResult;
+import io.ezorrio.yandextranslate.utils.Constants;
+import io.ezorrio.yandextranslate.utils.LanguageUtils;
 import io.ezorrio.yandextranslate.utils.TextUtils;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,11 +60,11 @@ public class ApiHelper {
         });
     }
 
-    public void detectAsync(final Context context, final String text, final TextView showOn){
+    public void detectAsync(final String text, final TextView showOn){
         mService.detectLanguage(API_KEY, text).enqueue(new Callback<LanguageDetectionResult>() {
             @Override
             public void onResponse(Call<LanguageDetectionResult> call, Response<LanguageDetectionResult> response) {
-                showOn.setText(response.body().getLang());
+                showOn.setText(LanguageUtils.findNameByKey(response.body().getLangCode()));
             }
 
             @Override
@@ -92,9 +91,10 @@ public class ApiHelper {
                 LinkedHashMap<String, String> data = response.body().getLangs();
                 ArrayList<Language> transformed = new ArrayList<>();
                 for (String key : data.keySet()) {
-                    String value = (String) data.get(key);
+                    String value = data.get(key);
                     transformed.add(new Language(key, value));
                 }
+                transformed.add(new Language(Constants.LANG_KEY_AUTO, Constants.LANG_NAME_AUTO));
                 App.getLanguageRepository().saveLanguageList(transformed);
             }
 

@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:elevation="5dp"
         android:layout_alignParentBottom="true"
-        app:itemBackground="?android:colorBackground"
         app:menu="@menu/menu_main" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

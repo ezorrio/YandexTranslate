@@ -27,9 +27,6 @@ public class LanguageAdapter extends BaseAdapter implements SpinnerAdapter {
     public LanguageAdapter(Context context, ArrayList<Language> data, boolean canDetect){
         this.mContext = context;
         this.mData = data;
-        if (canDetect){
-            mData.add(0, new Language("auto", "Detect language"));
-        }
     }
 
     @Override

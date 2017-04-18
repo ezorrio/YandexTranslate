@@ -24,7 +24,7 @@ public class LanguageDetectionResult {
         return code;
     }
 
-    public String getLang() {
+    public String getLangCode() {
         return lang;
     }
 }

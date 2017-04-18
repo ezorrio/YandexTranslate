@@ -31,6 +31,7 @@ import io.ezorrio.yandextranslate.adapter.LanguageAdapter;
 import io.ezorrio.yandextranslate.model.Bookmark;
 import io.ezorrio.yandextranslate.model.History;
 import io.ezorrio.yandextranslate.model.Language;
+import io.ezorrio.yandextranslate.utils.LanguageUtils;
 
 
 /**
@@ -59,7 +60,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLanguages = App.getLanguageRepository().getLanguages();
+        mLanguages = App.getLanguageList();
     }
 
     @Override
@@ -135,7 +136,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         }
 
         if (isAutoTranslate()){
-            App.getApiHelper().detectAsync(getContext(), initialText, mInputLang);
+            App.getApiHelper().detectAsync(initialText, mInputLang);
         }
         mTranslationHolder.setVisibility(View.VISIBLE);
         translate(initialText);
@@ -153,8 +154,8 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         if (mInputSpinner.getSelectedItem() == null || mTranslationSpinner.getSelectedItem() == null) {
             return null;
         }
-        String from = getLanguageCode(mInputSpinner.getSelectedItem().toString());
-        String to = getLanguageCode(mTranslationSpinner.getSelectedItem().toString());
+        String from = LanguageUtils.findKeyByName(mInputSpinner.getSelectedItem().toString());
+        String to = LanguageUtils.findKeyByName(mTranslationSpinner.getSelectedItem().toString());
         return isAutoTranslate() ? to : from + "-" + to;
     }
 
@@ -201,15 +202,6 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         return false;
     }
 
-    public String getLanguageCode(String input){
-        for (Language language : mLanguages){
-            if (language.getLang().equals(input)){
-                return language.getId();
-            }
-        }
-        return null;
-    }
-
     @Override
     public void onClick(View v) {
         if (mInput.getText().toString().isEmpty()){
@@ -223,26 +215,4 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
         mInput.getText().clear();
         mTranslationHolder.setVisibility(View.GONE);
     }
-
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putInt("input_lang", mInputSpinner.getSelectedItemPosition());
-//        outState.putInt("out_lang", mTranslationSpinner.getSelectedItemPosition());
-//        outState.putString("input_data", mInput.getText().toString());
-//        outState.putString("translated_data", mTranslation.getText().toString());
-//        outState.putParcelableArrayList("languages", mLanguages);
-//    }
-//
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        if (savedInstanceState != null){
-//            mLanguages = savedInstanceState.getParcelableArrayList("languages");
-//            mInputSpinner.setSelection(savedInstanceState.getInt("input_lang"));
-//            mTranslationSpinner.setSelection(savedInstanceState.getInt("out_lang"));
-//            mTranslation.setText(savedInstanceState.getString("translated_data"));
-//            mInput.setText(savedInstanceState.getString("input_data"));
-//        }
-//    }
 }

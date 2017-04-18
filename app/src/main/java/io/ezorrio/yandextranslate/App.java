@@ -21,6 +21,7 @@ public class App extends Application {
     private static BookmarksRepository mBookmarkRepo;
     private static HistoryRepository mHistoryRepo;
     private static LanguageRepository mLanguageRepo;
+    private static ArrayList<Language> mLanguageList;
 
     @Override
     public void onCreate() {
@@ -33,6 +34,7 @@ public class App extends Application {
         if (mLanguageRepo.getLanguages().isEmpty()){
             mApiHelper.getLanguagesAndSave(this);
         }
+        mLanguageList = mLanguageRepo.getLanguages();
     }
 
     public static ApiHelper getApiHelper() {
@@ -51,5 +53,7 @@ public class App extends Application {
         return mLanguageRepo;
     }
 
-
+    public static ArrayList<Language> getLanguageList() {
+        return mLanguageList;
+    }
 }
