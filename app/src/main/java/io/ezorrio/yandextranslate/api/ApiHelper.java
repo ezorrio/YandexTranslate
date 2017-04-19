@@ -90,11 +90,11 @@ public class ApiHelper {
             public void onResponse(Call<TranslationDirs> call, Response<TranslationDirs> response) {
                 LinkedHashMap<String, String> data = response.body().getLangs();
                 ArrayList<Language> transformed = new ArrayList<>();
+                transformed.add(new Language(Constants.LANG_KEY_AUTO, Constants.LANG_NAME_AUTO));
                 for (String key : data.keySet()) {
                     String value = data.get(key);
                     transformed.add(new Language(key, value));
                 }
-                transformed.add(new Language(Constants.LANG_KEY_AUTO, Constants.LANG_NAME_AUTO));
                 App.getLanguageRepository().saveLanguageList(transformed);
             }
 

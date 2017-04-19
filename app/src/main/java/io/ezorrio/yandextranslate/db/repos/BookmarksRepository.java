@@ -30,7 +30,7 @@ public class BookmarksRepository extends ContextWrapper {
 
     public ArrayList<Bookmark> getBookmarks() {
         Uri uri = AppContentProvider.getBookmarkContentUri();
-        Cursor cursor = getContentResolver().query(uri, null, null, null, BookmarkColumns._ID + " ASC");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, BookmarkColumns._ID + " DESC");
 
         ArrayList<Bookmark> bookmarks = new ArrayList<>();
 
@@ -65,15 +65,13 @@ public class BookmarksRepository extends ContextWrapper {
         }
         try {
             getContentResolver().applyBatch(AppContentProvider.AUTHORITY, operations);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (OperationApplicationException e) {
+        } catch (RemoteException | OperationApplicationException e) {
             e.printStackTrace();
         }
     }
 
     public void saveBookmark(Bookmark data) {
-        ArrayList list = new ArrayList<>(1);
+        ArrayList<Bookmark> list = new ArrayList<>(1);
         list.add(data);
         saveBookmarkList(list);
     }

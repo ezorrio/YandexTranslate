@@ -1,15 +1,10 @@
 package io.ezorrio.yandextranslate.fragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +14,6 @@ import java.util.ArrayList;
 import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.R;
 import io.ezorrio.yandextranslate.adapter.BookmarksAdapter;
-import io.ezorrio.yandextranslate.db.repos.BookmarksRepository;
 import io.ezorrio.yandextranslate.model.Bookmark;
 
 /**
@@ -54,12 +48,5 @@ public class BookmarksFragment extends Fragment{
         mAdapter = new BookmarksAdapter(getActivity(), mData);
         mRecyclerView.setAdapter(mAdapter);
         return root;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mData = App.getBookmarkRepository().getBookmarks();
-        mAdapter.notifyDataSetChanged();
     }
 }

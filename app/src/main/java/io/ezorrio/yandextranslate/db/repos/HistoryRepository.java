@@ -32,7 +32,7 @@ public class HistoryRepository extends ContextWrapper {
 
     public ArrayList<History> getHistory() {
         Uri uri = AppContentProvider.getHistoryContentUri();
-        Cursor cursor = getContentResolver().query(uri, null, null, null, HistoryColumns._ID + " ASC");
+        Cursor cursor = getContentResolver().query(uri, null, null, null, HistoryColumns._ID + " DESC");
 
         ArrayList<History> history = new ArrayList<>();
 
@@ -72,7 +72,7 @@ public class HistoryRepository extends ContextWrapper {
     }
 
     public void saveHistory(History data){
-        ArrayList list = new ArrayList<>();
+        ArrayList<History> list = new ArrayList<>();
         list.add(data);
         saveHistoryList(list);
     }

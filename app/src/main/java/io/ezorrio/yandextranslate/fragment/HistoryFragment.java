@@ -1,10 +1,8 @@
 package io.ezorrio.yandextranslate.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,10 +13,8 @@ import java.util.ArrayList;
 
 import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.R;
-import io.ezorrio.yandextranslate.adapter.BookmarksAdapter;
 import io.ezorrio.yandextranslate.adapter.HistoryAdapter;
-import io.ezorrio.yandextranslate.db.repos.BookmarksRepository;
-import io.ezorrio.yandextranslate.db.repos.HistoryRepository;
+import io.ezorrio.yandextranslate.model.History;
 
 /**
  * Created by golde on 28.03.2017.
@@ -40,7 +36,7 @@ public class HistoryFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList data = App.getHistoryRepository().getHistory();
+        ArrayList<History> data = App.getHistoryRepository().getHistory();
         mAdapter = new HistoryAdapter(getActivity(), data);
     }
 

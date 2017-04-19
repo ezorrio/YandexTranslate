@@ -96,9 +96,9 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
                 if (!mInput.getText().toString().isEmpty()) {
                     App.getBookmarkRepository().saveBookmark(
                             new Bookmark(0, mInput.getText().toString(),
-                                    mInputLang.getText().toString(),
+                                    LanguageUtils.findKeyByName(mInputLang.getText().toString()),
                                     mTranslation.getText().toString(),
-                                    mTranslationLang.getText().toString()));
+                                    LanguageUtils.findKeyByName(mTranslationLang.getText().toString())));
                 } else {
                     Toast.makeText(getContext(), "Can\'t save empty bookmark", Toast.LENGTH_SHORT).show();
                 }
@@ -115,7 +115,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
             mInputSpinner.setAdapter(adapter);
             mTranslationSpinner.setAdapter(adapter1);
         }
-        mTranslationSpinner.setSelection(17);
+        mTranslationSpinner.setSelection(16);
         mInputSpinner.setOnItemSelectedListener(this);
         mTranslationSpinner.setOnItemSelectedListener(this);
         mInputSpinner.setOnTouchListener(this);

@@ -30,10 +30,7 @@ public class App extends Application {
         mBookmarkRepo = BookmarksRepository.getInstance(this);
         mHistoryRepo = HistoryRepository.getInstance(this);
         mLanguageRepo = LanguageRepository.getInstance(this);
-
-        if (mLanguageRepo.getLanguages().isEmpty()){
-            mApiHelper.getLanguagesAndSave(this);
-        }
+        mApiHelper.getLanguagesAndSave(this);
         mLanguageList = mLanguageRepo.getLanguages();
     }
 
