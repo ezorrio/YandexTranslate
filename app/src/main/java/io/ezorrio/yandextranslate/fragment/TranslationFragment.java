@@ -233,8 +233,8 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
                     break;
                 }
                 int temp = mTranslationSpinner.getSelectedItemPosition();
-                mTranslationSpinner.setSelection(mInputSpinner.getSelectedItemPosition() - 1);
-                mInputSpinner.setSelection(temp + 1);
+                mTranslationSpinner.setSelection(mInputSpinner.getSelectedItemPosition()); //-1
+                mInputSpinner.setSelection(temp); //+1
                 break;
         }
     }
