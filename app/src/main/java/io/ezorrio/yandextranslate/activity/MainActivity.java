@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
         navigation.setOnNavigationItemSelectedListener(this);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_translate);
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setPage(0);
     }
 
-    private void setPage(int position){
+    public void setPage(int position){
         Fragment fragment;
         switch (position){
             case 0:

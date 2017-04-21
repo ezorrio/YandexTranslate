@@ -30,7 +30,11 @@ public class App extends Application {
         mBookmarkRepo = BookmarksRepository.getInstance(this);
         mHistoryRepo = HistoryRepository.getInstance(this);
         mLanguageRepo = LanguageRepository.getInstance(this);
-        mApiHelper.getLanguagesAndSave(this);
+        if (mLanguageRepo.getLanguages() == null || mLanguageRepo.getLanguages().isEmpty()) {
+            mApiHelper.getLanguagesAndSave(this);
+        } else {
+            setLanguageList(mLanguageRepo.getLanguages());
+        }
     }
 
     public static ApiHelper getApiHelper() {

@@ -4,6 +4,7 @@ package io.ezorrio.yandextranslate.api;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,26 @@ public class ApiHelper {
     }
 
     public void getLanguagesAndSave(final Context context){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        LinkedHashMap<String, String> data = null;
+        try {
+            data = mService.getLangs(API_KEY, "en").execute().body().getLangs();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Language> transformed = new ArrayList<>();
+        transformed.add(new Language(Constants.LANG_KEY_AUTO, Constants.LANG_NAME_AUTO));
+        if (data != null) {
+            for (String key : data.keySet()) {
+                String value = data.get(key);
+                transformed.add(new Language(key, value));
+            }
+        }
+        App.getLanguageRepository().saveLanguageList(transformed);
+    }
+
+    public void getLanguagesAndSaveAsync(final Context context){
         //Toast.makeText(context, "Preparing data...", Toast.LENGTH_SHORT).show();
         mService.getLangs(API_KEY, "en").enqueue(new Callback<TranslationDirs>() {
             @Override
