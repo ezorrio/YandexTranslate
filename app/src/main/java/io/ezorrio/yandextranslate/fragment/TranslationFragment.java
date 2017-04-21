@@ -116,9 +116,12 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     private void configureSpinners() {
         if (mInputSpinner.getAdapter() == null || mTranslationSpinner.getAdapter() == null) {
             mLanguages = App.getLanguageRepository().getLanguages();
-
+            if (mLanguages == null){
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                return;
+            }
             LanguageAdapter adapter = new LanguageAdapter(getContext(), mLanguages, true);
-            LanguageAdapter adapter1 = new LanguageAdapter(getContext(), (ArrayList<Language>) mLanguages.clone(), false);
+            LanguageAdapter adapter1 = new LanguageAdapter(getContext(), mLanguages, false);
             mInputSpinner.setAdapter(adapter);
             mTranslationSpinner.setAdapter(adapter1);
         }

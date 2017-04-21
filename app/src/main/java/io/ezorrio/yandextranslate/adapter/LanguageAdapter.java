@@ -26,7 +26,7 @@ public class LanguageAdapter extends BaseAdapter implements SpinnerAdapter {
     public LanguageAdapter(Context context, ArrayList<Language> data, boolean canDetect){
         this.mContext = context;
         this.mData = data;
-        if (!canDetect) {
+        if (!canDetect && !data.isEmpty()) {
             this.mData.remove(0);
         }
     }
