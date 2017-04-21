@@ -31,7 +31,6 @@ public class App extends Application {
         mHistoryRepo = HistoryRepository.getInstance(this);
         mLanguageRepo = LanguageRepository.getInstance(this);
         mApiHelper.getLanguagesAndSave(this);
-        mLanguageList = mLanguageRepo.getLanguages();
     }
 
     public static ApiHelper getApiHelper() {
@@ -52,5 +51,9 @@ public class App extends Application {
 
     public static ArrayList<Language> getLanguageList() {
         return mLanguageList;
+    }
+
+    public static void setLanguageList(ArrayList<Language> mLanguageList) {
+        App.mLanguageList = mLanguageList;
     }
 }

@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import io.ezorrio.yandextranslate.App;
 import io.ezorrio.yandextranslate.db.columns.LanguageColumns;
 import io.ezorrio.yandextranslate.model.Language;
 import io.ezorrio.yandextranslate.provider.AppContentProvider;
@@ -51,6 +52,7 @@ public class LanguageRepository extends ContextWrapper {
     }
 
     public void saveLanguageList(ArrayList<Language> data) {
+        App.setLanguageList(data);
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
@@ -70,7 +72,7 @@ public class LanguageRepository extends ContextWrapper {
     }
 
     public void saveLanguage(Language data) {
-        ArrayList list = new ArrayList<>(1);
+        ArrayList<Language> list = new ArrayList<>(1);
         list.add(data);
         saveLanguageList(list);
     }

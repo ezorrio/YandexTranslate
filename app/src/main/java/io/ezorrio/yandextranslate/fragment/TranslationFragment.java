@@ -99,6 +99,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
                                     LanguageUtils.findKeyByName(mInputLang.getText().toString()),
                                     mTranslation.getText().toString(),
                                     LanguageUtils.findKeyByName(mTranslationLang.getText().toString())));
+                    Toast.makeText(getContext(), "Saved bookmark", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Can\'t save empty bookmark", Toast.LENGTH_SHORT).show();
                 }
