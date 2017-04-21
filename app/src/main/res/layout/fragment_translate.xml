@@ -26,14 +26,22 @@
                 android:layout_height="wrap_content"
                 android:textColor="?colorAccent"
                 android:textSize="14sp"
-                android:layout_weight="50"/>
+                android:layout_weight="40"/>
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/swap"
+                android:src="@drawable/ic_swap_horiz"
+                android:background="@drawable/circle_back"
+                style="@style/Widget.AppCompat.Button.Borderless" />
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/result_header"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="?colorPrimary"
-                android:layout_weight="50"/>
+                android:layout_weight="40"/>
 
         </LinearLayout>
 

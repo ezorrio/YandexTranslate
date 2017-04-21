@@ -50,6 +50,7 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     private Spinner mInputSpinner;
     private Spinner mTranslationSpinner;
     private ImageButton mErase;
+    private ImageButton mSwap;
     private ArrayList<Language> mLanguages;
 
     public static TranslationFragment newInstance() {
@@ -78,8 +79,10 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
 
         mInput = (EditText) root.findViewById(R.id.input);
         mErase = (ImageButton) root.findViewById(R.id.delete_input);
+        mSwap = (ImageButton) root.findViewById(R.id.swap);
         mInput.addTextChangedListener(this);
         mErase.setOnClickListener(this);
+        mSwap.setOnClickListener(this);
         configureSpinners();
         setHasOptionsMenu(true);
         return root;
@@ -209,16 +212,28 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
 
     @Override
     public void onClick(View v) {
-        if (mInput.getText().toString().isEmpty()){
-            return;
+        switch (v.getId()){
+            case R.id.delete_input:
+                if (mInput.getText().toString().isEmpty()){
+                    return;
+                }
+                App.getHistoryRepository().saveHistory(
+                        new History(mInput.getText().toString().trim(),
+                                mInputLang.getText().toString(),
+                                mTranslation.getText().toString().trim(),
+                                mTranslationLang.getText().toString()));
+                mInput.getText().clear();
+                mTranslationHolder.setVisibility(View.GONE);
+                break;
+            case R.id.swap:
+                if (mInputSpinner.getSelectedItemPosition() == 0){
+                    break;
+                }
+                int temp = mTranslationSpinner.getSelectedItemPosition();
+                mTranslationSpinner.setSelection(mInputSpinner.getSelectedItemPosition() - 1);
+                mInputSpinner.setSelection(temp + 1);
+                break;
         }
-        App.getHistoryRepository().saveHistory(
-                new History(mInput.getText().toString().trim(),
-                        mInputLang.getText().toString(),
-                        mTranslation.getText().toString().trim(),
-                        mTranslationLang.getText().toString()));
-        mInput.getText().clear();
-        mTranslationHolder.setVisibility(View.GONE);
     }
 
     @Override
