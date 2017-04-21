@@ -23,10 +23,12 @@ import io.ezorrio.yandextranslate.model.api.TranslationDirs;
 public class LanguageAdapter extends BaseAdapter implements SpinnerAdapter {
     private Context mContext;
     private ArrayList<Language> mData;
-
     public LanguageAdapter(Context context, ArrayList<Language> data, boolean canDetect){
         this.mContext = context;
         this.mData = data;
+        if (!canDetect) {
+            this.mData.remove(0);
+        }
     }
 
     @Override

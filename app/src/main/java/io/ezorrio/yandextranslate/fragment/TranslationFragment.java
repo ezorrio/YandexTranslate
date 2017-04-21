@@ -31,6 +31,8 @@ import io.ezorrio.yandextranslate.adapter.LanguageAdapter;
 import io.ezorrio.yandextranslate.model.Bookmark;
 import io.ezorrio.yandextranslate.model.History;
 import io.ezorrio.yandextranslate.model.Language;
+import io.ezorrio.yandextranslate.prefs.AppPrefs;
+import io.ezorrio.yandextranslate.provider.AppContentProvider;
 import io.ezorrio.yandextranslate.utils.LanguageUtils;
 
 
@@ -95,11 +97,11 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
             case R.id.add_bookmark:
                 if (!mInput.getText().toString().isEmpty()) {
                     App.getBookmarkRepository().saveBookmark(
-                            new Bookmark(0, mInput.getText().toString(),
+                            new Bookmark(0, mInput.getText().toString().trim(),
                                     LanguageUtils.findKeyByName(mInputLang.getText().toString()),
-                                    mTranslation.getText().toString(),
+                                    mTranslation.getText().toString().trim(),
                                     LanguageUtils.findKeyByName(mTranslationLang.getText().toString())));
-                    Toast.makeText(getContext(), "Saved bookmark", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Bookmark saved", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Can\'t save empty bookmark", Toast.LENGTH_SHORT).show();
                 }
@@ -111,12 +113,14 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
     private void configureSpinners() {
         if (mInputSpinner.getAdapter() == null || mTranslationSpinner.getAdapter() == null) {
             mLanguages = App.getLanguageRepository().getLanguages();
+
             LanguageAdapter adapter = new LanguageAdapter(getContext(), mLanguages, true);
-            LanguageAdapter adapter1 = new LanguageAdapter(getContext(), mLanguages, false);
+            LanguageAdapter adapter1 = new LanguageAdapter(getContext(), (ArrayList<Language>) mLanguages.clone(), false);
             mInputSpinner.setAdapter(adapter);
             mTranslationSpinner.setAdapter(adapter1);
         }
-        mTranslationSpinner.setSelection(16);
+        mInputSpinner.setSelection(AppPrefs.getDir(getActivity())[0]);
+        mTranslationSpinner.setSelection(AppPrefs.getDir(getActivity())[1]);
         mInputSpinner.setOnItemSelectedListener(this);
         mTranslationSpinner.setOnItemSelectedListener(this);
         mInputSpinner.setOnTouchListener(this);
@@ -209,11 +213,17 @@ public class TranslationFragment extends Fragment implements TextWatcher, Adapte
             return;
         }
         App.getHistoryRepository().saveHistory(
-                new History(mInput.getText().toString(),
+                new History(mInput.getText().toString().trim(),
                         mInputLang.getText().toString(),
-                        mTranslation.getText().toString(),
+                        mTranslation.getText().toString().trim(),
                         mTranslationLang.getText().toString()));
         mInput.getText().clear();
         mTranslationHolder.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppPrefs.saveDir(getActivity(), mInputSpinner.getSelectedItemPosition(), mTranslationSpinner.getSelectedItemPosition());
     }
 }
