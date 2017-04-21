@@ -3,6 +3,7 @@ package io.ezorrio.yandextranslate.api;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import io.ezorrio.yandextranslate.App;
+import io.ezorrio.yandextranslate.activity.MainActivity;
 import io.ezorrio.yandextranslate.model.Language;
 import io.ezorrio.yandextranslate.model.api.LanguageDetectionResult;
 import io.ezorrio.yandextranslate.model.api.TranslationDirs;
@@ -85,6 +87,7 @@ public class ApiHelper {
     }
 
     public void getLanguagesAndSave(final Context context){
+        Toast.makeText(context, "Preparing data...", Toast.LENGTH_SHORT).show();
         mService.getLangs(API_KEY, "en").enqueue(new Callback<TranslationDirs>() {
             @Override
             public void onResponse(Call<TranslationDirs> call, Response<TranslationDirs> response) {
@@ -96,6 +99,10 @@ public class ApiHelper {
                     transformed.add(new Language(key, value));
                 }
                 App.getLanguageRepository().saveLanguageList(transformed);
+                Toast.makeText(context, "Done!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
             }
 
             @Override
