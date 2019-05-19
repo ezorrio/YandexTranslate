@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_translate"
+        android:id="@+id/translationFragment"
         android:enabled="true"
         android:icon="@drawable/ic_translate"
         android:title="@string/translate"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_bookmarks"
+        android:id="@+id/bookmarksFragment"
         android:enabled="true"
         android:icon="@drawable/ic_star"
         android:title="@string/bookmarks"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_history"
+        android:id="@+id/historyFragment"
         android:enabled="true"
         android:icon="@drawable/ic_history"
         android:title="@string/history"

@@ -1,65 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
-    android:weightSum="100"
-    android:animateLayoutChanges="true">
+    android:weightSum="100">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?colorPrimary"
-        app:cardCornerRadius="0dp"
-        app:contentPadding="8dp"
-        app:elevation="5dp">
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/input_lang_choose"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="40" />
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/input_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="?colorAccent"
-                android:textSize="14sp"
-                android:layout_weight="40"/>
+        <ImageButton
+            android:id="@+id/swap"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_swap_horiz"
+            android:tint="?colorOnBackground" />
 
-            <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:id="@+id/swap"
-                android:src="@drawable/ic_swap_horiz"
-                android:background="@drawable/circle_back"
-                style="@style/Widget.AppCompat.Button.Borderless" />
+        <Button
+            android:id="@+id/result_lang_choose"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40" />
+    </LinearLayout>
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/result_header"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="?colorPrimary"
-                android:layout_weight="40"/>
 
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="1dp"
+        android:layout_margin="8dp"
         android:layout_weight="30"
-        app:cardCornerRadius="0dp"
-        app:contentPadding="8dp"
-        app:elevation="5dp">
+        app:contentPadding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -71,16 +58,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Detect language"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="14sp" />
+                    tools:text="Detect language" />
 
                 <ImageButton
                     android:id="@+id/delete_input"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:src="@drawable/ic_close" />
@@ -93,30 +80,27 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="4dp"
                 android:background="@android:color/transparent"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:hint="@string/hint_translate"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/primary_translation_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="1dp"
+        android:layout_margin="8dp"
         android:layout_weight="30"
         android:visibility="gone"
-        app:cardBackgroundColor="?colorAccent"
-        app:cardCornerRadius="0dp"
-        app:contentPadding="8dp"
-        app:elevation="5dp">
+        app:contentPadding="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:orientation="vertical">
 
             <TextView
@@ -124,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="?android:textColorPrimaryInverse" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <TextView
                 android:id="@+id/result"
@@ -132,13 +116,11 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="4dp"
                 android:text="@string/see_results_here"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="?android:textColorSecondaryInverse"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textIsSelectable="true" />
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

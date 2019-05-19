@@ -1,12 +1,20 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorRipple</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
+        </item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+
+        <item name="colorPrimary">#FFEB3B</item>
+        <item name="colorSecondary">#FFF176</item>
+        <item name="colorOnPrimary">#212121</item>
+        <item name="colorOnSecondary">#313131</item>
+        <item name="colorOnBackground">#212121</item>
+
     </style>
 
 </resources>
