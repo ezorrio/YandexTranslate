@@ -181,6 +181,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
                             translatedData = mTranslation.text.toString(),
                             translatedLang = AppPrefs.getDir(context!!)[1]!!))
                 }
+                hideKeyboard()
                 Snackbar.make(v, "Bookmark saved", LENGTH_SHORT).show()
             }
         }

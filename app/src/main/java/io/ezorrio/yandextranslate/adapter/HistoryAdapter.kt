@@ -26,8 +26,10 @@ class HistoryAdapter(private val mContext: Context) : RecyclerView.Adapter<Histo
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.lineOne.text = data[position].originalData
-        holder.lineTwo.text = data[position].translatedData
+        val lineOne = data[position].originalLang.toUpperCase() + ": " + data[position].originalData
+        val lineTwo = data[position].translatedLang.toUpperCase() + ": " + data[position].translatedData
+        holder.lineOne.text = lineOne
+        holder.lineTwo.text = lineTwo
     }
 
     override fun getItemCount(): Int {

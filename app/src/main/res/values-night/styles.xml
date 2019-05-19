@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">?android:colorBackground
+        </item>
+        <item name="android:fontFamily">@font/montserrat</item>
+
+        <item name="colorPrimary">#FDD835</item>
+        <item name="colorSecondary">#FFF176</item>
+        <item name="colorOnPrimary">#212121</item>
+        <item name="colorOnSecondary">#313131</item>
+        <item name="colorOnBackground">#FFF</item>
+
+        <item name="shapeAppearanceLargeComponent">@style/App.ShapeAppearance.LargeComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/App.ShapeAppearance.MediumComponent
+        </item>
+        <item name="shapeAppearanceSmallComponent">@style/App.ShapeAppearance.SmallComponent</item>
+    </style>
+</resources>
