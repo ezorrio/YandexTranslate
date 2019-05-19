@@ -27,4 +27,11 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
             historyDao.save(history)
         }
     }
+
+    @ObsoleteCoroutinesApi
+    suspend fun clearHistory() {
+        withContext(coroutineContext) {
+            historyDao.clearAll()
+        }
+    }
 }

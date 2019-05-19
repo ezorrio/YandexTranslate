@@ -4,6 +4,7 @@
     android:id="@+id/line_one"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    style="?android:borderlessButtonStyle"
+    android:padding="8dp"
     android:minHeight="48dp"
     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />

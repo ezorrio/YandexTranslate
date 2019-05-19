@@ -12,6 +12,6 @@ interface LanguagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(language: List<AppLanguage>)
 
-    @Query("SELECT * FROM languages")
+    @Query("SELECT * FROM languages ORDER BY lang ASC")
     fun load(): LiveData<List<AppLanguage>>
 }

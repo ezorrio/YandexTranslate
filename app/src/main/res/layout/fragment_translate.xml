@@ -59,18 +59,33 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    android:textColor="?android:textColorPrimary"
                     tools:text="Detect language" />
 
-                <ImageButton
-                    android:id="@+id/delete_input"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_close" />
+                    android:layout_centerVertical="true">
+
+                    <ImageButton
+                        android:id="@+id/bookmark"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_star_outline"
+                        android:tint="?colorOnBackground" />
+
+                    <ImageButton
+                        android:id="@+id/delete_input"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_close"
+                        android:tint="?colorOnBackground" />
+
+                </LinearLayout>
 
             </RelativeLayout>
 

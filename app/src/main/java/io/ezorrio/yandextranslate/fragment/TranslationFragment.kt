@@ -17,7 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import io.ezorrio.yandextranslate.R
+import io.ezorrio.yandextranslate.model.room.AppBookmark
 import io.ezorrio.yandextranslate.model.room.AppHistory
 import io.ezorrio.yandextranslate.model.room.AppLanguage
 import io.ezorrio.yandextranslate.model.view.BookmarkViewModel
@@ -42,6 +45,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
     private lateinit var mInput: EditText
     private lateinit var mTranslation: TextView
     private lateinit var mErase: ImageButton
+    private lateinit var mSaveFave: ImageButton
     private lateinit var mSwap: ImageButton
     private lateinit var mLanguages: LanguagesViewModel
     private lateinit var mHistory: HistoryViewModel
@@ -71,11 +75,13 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
 
         mInput = root.findViewById(R.id.input)
         mErase = root.findViewById(R.id.delete_input)
+        mSaveFave = root.findViewById(R.id.bookmark)
         mSwap = root.findViewById(R.id.swap)
         mInput.addTextChangedListener(this)
         mInputLangChoose.setOnClickListener(this)
         mTranslationLangChoose.setOnClickListener(this)
         mErase.setOnClickListener(this)
+        mSaveFave.setOnClickListener(this)
         mSwap.setOnClickListener(this)
 
         return root
@@ -84,6 +90,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
     override fun onResume() {
         super.onResume()
         updateLanguagesData()
+        updateTranslationCard()
     }
 
     private fun updateLanguagesData() {
@@ -151,6 +158,16 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
                 val bundle = Bundle()
                 bundle.putString(LanguageChooseFragment.KEY_BUNDLE_DIRECTION, LanguageChooseFragment.DIRECTION_TO)
                 Navigation.findNavController(v).navigate(R.id.action_translationFragment_to_languageChooseDialogFragment, bundle)
+            }
+
+            mSaveFave -> {
+                launch {
+                    mBookmarks.saveBookmark(AppBookmark(originalData = mInput.text.toString().trim(),
+                            originalLang = AppPrefs.getDir(context!!)[0]!!,
+                            translatedData = mTranslation.text.toString(),
+                            translatedLang = AppPrefs.getDir(context!!)[1]!!))
+                }
+                Snackbar.make(v, "Bookmark saved", LENGTH_SHORT).show()
             }
         }
     }

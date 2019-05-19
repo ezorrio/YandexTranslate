@@ -14,7 +14,7 @@ import io.ezorrio.yandextranslate.model.room.AppHistory
  */
 
 class HistoryAdapter(private val mContext: Context) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
-    var data: List<AppHistory>? = null
+    var data: List<AppHistory> = emptyList()
         set(data) {
             field = data
             notifyDataSetChanged()
@@ -26,12 +26,12 @@ class HistoryAdapter(private val mContext: Context) : RecyclerView.Adapter<Histo
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.lineOne.text = data!![position].originalData
-        holder.lineTwo.text = data!![position].translatedData
+        holder.lineOne.text = data[position].originalData
+        holder.lineTwo.text = data[position].translatedData
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return data.size
     }
 
     inner class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -14,7 +14,7 @@ import io.ezorrio.yandextranslate.model.room.AppBookmark
  */
 
 class BookmarksAdapter(private val mContext: Context) : RecyclerView.Adapter<BookmarksAdapter.BookmarksViewHolder>() {
-    var data: List<AppBookmark>? = null
+    var data: List<AppBookmark> = emptyList()
         set(data) {
             field = data
             notifyDataSetChanged()
@@ -26,12 +26,12 @@ class BookmarksAdapter(private val mContext: Context) : RecyclerView.Adapter<Boo
     }
 
     override fun onBindViewHolder(holder: BookmarksViewHolder, position: Int) {
-        holder.lineOne.text = data!![position].originalData
-        holder.lineTwo.text = data!![position].translatedData
+        holder.lineOne.text = data[position].originalData
+        holder.lineTwo.text = data[position].translatedData
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return data.size
     }
 
     inner class BookmarksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

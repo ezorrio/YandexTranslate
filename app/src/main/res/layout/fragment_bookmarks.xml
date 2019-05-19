@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/empty_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list"/>
+        android:background="?android:colorBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/circle_back"
+            android:backgroundTint="?colorPrimary"
+            android:padding="24dp"
+            android:src="@drawable/ic_star" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="You don\'t have any bookmarks! \n Press star on translation card to add one"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+    </LinearLayout>
+
+</RelativeLayout>

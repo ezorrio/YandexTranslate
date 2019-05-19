@@ -12,6 +12,9 @@ interface HistoryDao {
     @Insert(onConflict = REPLACE)
     fun save(history: AppHistory)
 
-    @Query("SELECT * FROM history")
+    @Query("SELECT * FROM history ORDER BY id DESC")
     fun load(): LiveData<List<AppHistory>>
+
+    @Query("DELETE FROM history")
+    fun clearAll()
 }

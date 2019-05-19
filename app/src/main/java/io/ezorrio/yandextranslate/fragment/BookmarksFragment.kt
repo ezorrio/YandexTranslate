@@ -22,6 +22,7 @@ class BookmarksFragment : Fragment() {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: BookmarksAdapter
     private lateinit var mBookmarkViewModel: BookmarkViewModel
+    private lateinit var mEmpty: ViewGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,15 +31,17 @@ class BookmarksFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_bookmarks, container, false)
+        mEmpty = root.findViewById(R.id.empty_screen)
         mRecyclerView = root.findViewById(R.id.list)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
         mAdapter = BookmarksAdapter(requireContext())
         mRecyclerView.adapter = mAdapter
+        mBookmarkViewModel.getAllBookmarks().observe(this, Observer { bookmarks: List<AppBookmark> ->
+            run {
+                mEmpty.visibility = if (bookmarks.isEmpty()) View.VISIBLE else View.GONE
+                mAdapter.data = bookmarks
+            }
+        })
         return root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mBookmarkViewModel.getAllBookmarks().observe(this, Observer { bookmarks: List<AppBookmark> -> mAdapter.data = bookmarks })
     }
 }

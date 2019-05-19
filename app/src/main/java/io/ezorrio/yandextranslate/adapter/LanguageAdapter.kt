@@ -15,7 +15,7 @@ import io.ezorrio.yandextranslate.model.room.AppLanguage
 
 class LanguageAdapter(private val mContext: Context) : RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
 
-    var data: List<AppLanguage>? = null
+    var data: List<AppLanguage> = emptyList()
         set(data) {
             field = data
             notifyDataSetChanged()
@@ -27,11 +27,11 @@ class LanguageAdapter(private val mContext: Context) : RecyclerView.Adapter<Lang
     }
 
     override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
-        holder.lineOne.text = data!![position].lang
+        holder.lineOne.text = data[position].lang
     }
 
     override fun getItemCount(): Int {
-        return data?.size ?: 0
+        return data.size
     }
 
     inner class LanguageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
