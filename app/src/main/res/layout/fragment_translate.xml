@@ -9,6 +9,7 @@
     android:weightSum="100">
 
     <LinearLayout
+        android:id="@+id/translation_languages_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -97,6 +98,7 @@
                 android:background="@android:color/transparent"
                 android:gravity="top|start"
                 android:hint="@string/hint_translate"
+                android:inputType="textMultiLine"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
         </LinearLayout>
@@ -130,9 +132,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="4dp"
-                android:text="@string/see_results_here"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:textIsSelectable="true" />
+                android:textIsSelectable="true"
+                tools:text="@string/see_results_here" />
 
         </LinearLayout>
 

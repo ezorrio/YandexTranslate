@@ -36,8 +36,9 @@ import kotlin.coroutines.CoroutineContext
  * Created by golde on 28.03.2017.
  */
 
-class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, CoroutineScope {
+class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, CoroutineScope, View.OnFocusChangeListener {
     private lateinit var mTranslationHolder: ViewGroup
+    private lateinit var mLanguagesHolder: ViewGroup
     private lateinit var mInputLangChoose: Button
     private lateinit var mInputLang: TextView
     private lateinit var mTranslationLangChoose: Button
@@ -66,6 +67,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_translate, container, false)
 
+        mLanguagesHolder = root.findViewById(R.id.translation_languages_holder)
         mInputLangChoose = root.findViewById(R.id.input_lang_choose)
         mInputLang = root.findViewById(R.id.input_lang)
         mTranslationLangChoose = root.findViewById(R.id.result_lang_choose)
@@ -78,6 +80,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
         mSaveFave = root.findViewById(R.id.bookmark)
         mSwap = root.findViewById(R.id.swap)
         mInput.addTextChangedListener(this)
+        mInput.onFocusChangeListener = this
         mInputLangChoose.setOnClickListener(this)
         mTranslationLangChoose.setOnClickListener(this)
         mErase.setOnClickListener(this)
@@ -126,11 +129,18 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
         updateTranslationCard()
     }
 
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        mLanguagesHolder.visibility = if (hasFocus) View.GONE else View.VISIBLE
+    }
+
     @ObsoleteCoroutinesApi
     override fun onClick(v: View?) {
         when (v) {
             mErase -> {
                 launch {
+                    if (mInput.text.toString().trim().isEmpty()) {
+                        return@launch
+                    }
                     mHistory.saveHistory(AppHistory(originalData = mInput.text.toString().trim(),
                             originalLang = AppPrefs.getDir(context!!)[0]!!,
                             translatedData = mTranslation.text.toString(),
@@ -138,6 +148,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
                     mInput.editableText.clear()
                 }
                 hideKeyboard()
+                mInput.clearFocus()
             }
 
             mSwap -> {
@@ -162,6 +173,9 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
 
             mSaveFave -> {
                 launch {
+                    if (mInput.text.toString().trim().isEmpty()) {
+                        return@launch
+                    }
                     mBookmarks.saveBookmark(AppBookmark(originalData = mInput.text.toString().trim(),
                             originalLang = AppPrefs.getDir(context!!)[0]!!,
                             translatedData = mTranslation.text.toString(),
