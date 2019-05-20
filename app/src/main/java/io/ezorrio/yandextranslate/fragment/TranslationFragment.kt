@@ -20,6 +20,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import io.ezorrio.yandextranslate.R
+import io.ezorrio.yandextranslate.model.api.TranslationResult
 import io.ezorrio.yandextranslate.model.room.AppBookmark
 import io.ezorrio.yandextranslate.model.room.AppHistory
 import io.ezorrio.yandextranslate.model.room.AppLanguage
@@ -92,18 +93,29 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
 
     override fun onResume() {
         super.onResume()
+        updateSwapState()
         updateLanguagesData()
         updateTranslationCard()
+    }
+
+    private fun updateSwapState() {
+        mSwap.isEnabled = !AppPrefs.isAutoDetect(requireContext())
     }
 
     private fun updateLanguagesData() {
         mLanguages.getAllLanguages().observe(this, Observer { languages: List<AppLanguage> ->
             run {
-                val inputLang = languages.find { appLanguage ->
-                    appLanguage.id == AppPrefs.getDir(requireContext())[0]
-                }?.lang
-                mInputLangChoose.text = inputLang
-                mInputLang.text = inputLang
+                if (!AppPrefs.isAutoDetect(requireContext())) {
+                    val inputLang = languages.find { appLanguage ->
+                        appLanguage.id == AppPrefs.getDir(requireContext())[0]
+                    }?.lang
+                    mInputLangChoose.text = inputLang
+                    mInputLang.text = inputLang
+                } else {
+                    mInputLangChoose.text = getString(R.string.autodetect)
+                    mInputLang.text = getString(R.string.autodetect)
+                }
+
                 val translateLang = languages.find { appLanguage ->
                     appLanguage.id == AppPrefs.getDir(requireContext())[1]
                 }?.lang
@@ -182,20 +194,40 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
                             translatedLang = AppPrefs.getDir(context!!)[1]!!))
                 }
                 hideKeyboard()
-                Snackbar.make(v, "Bookmark saved", LENGTH_SHORT).show()
+                Snackbar.make(v, getString(R.string.bookmark_saved), LENGTH_SHORT).show()
             }
         }
     }
 
     private fun updateTranslationCard() {
         launch {
-            if (mInput.text.isEmpty()) {
+            val input = mInput.text.toString().trim()
+
+            if (input.isEmpty()) {
+                mTranslationHolder.visibility = View.GONE
+                mLanguagesHolder.visibility = View.VISIBLE
                 return@launch
             }
-            val result = mTranslator.translate(mInput.text.toString().trim(), AppPrefs.getDir(requireContext()))
-            mTranslationHolder.visibility = if (result?.text.toString().trim().isNotEmpty()) {
-                View.VISIBLE
-            } else View.GONE
+
+            val result: TranslationResult? = if (AppPrefs.isAutoDetect(requireContext())) {
+                mTranslator.translate(input, AppPrefs.getDirTo(requireContext()))
+            } else {
+                mTranslator.translate(input, AppPrefs.getDir(requireContext()))
+            }
+
+            if (AppPrefs.isAutoDetect(requireContext())) {
+                mLanguages.getAllLanguages().observe(this@TranslationFragment, Observer { languages: List<AppLanguage> ->
+                    run {
+                        val langCode = result?.lang?.split("-")?.get(0)
+                        val language = languages.find { language -> language.id == langCode }?.lang
+                        val text = getString(R.string.autodetect) + ": " + language
+                        mInputLang.text = text
+                    }
+                })
+            }
+
+            val isResultEmpty = result?.text.toString().trim().isEmpty()
+            mTranslationHolder.visibility = if (!isResultEmpty) View.VISIBLE else View.GONE
             mTranslation.text = result?.text?.joinToString()
         }
     }

@@ -11,6 +11,7 @@ object AppPrefs {
     private val KEY_DIR_FROM = "dir_from"
     private val KEY_DIR_TO = "dir_to"
     private val KEY_IS_INITIAL = "initial_run"
+    private val KEY_AUTO = "key_autodetect"
 
     fun saveDir(context: Context, from: String, to: String) {
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -34,9 +35,26 @@ object AppPrefs {
                 .apply()
     }
 
+    fun setAutoDetect(context: Context, value: Boolean) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(KEY_AUTO, value)
+                .apply()
+    }
+
+    fun isAutoDetect(context: Context): Boolean {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(KEY_AUTO, false)
+    }
+
     fun getDir(context: Context): Array<String?> {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return arrayOf(preferences.getString(KEY_DIR_FROM, "en"), preferences.getString(KEY_DIR_TO, "ru"))
+    }
+
+    fun getDirTo(context: Context): String? {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(KEY_DIR_TO, "ru")
     }
 
     fun isInitialRun(context: Context): Boolean {

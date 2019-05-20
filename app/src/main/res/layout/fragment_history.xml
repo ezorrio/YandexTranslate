@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Your steps are invisible. \n History is saved as you clear your translation"
+            android:text="@string/no_history_text"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
     </LinearLayout>

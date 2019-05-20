@@ -8,4 +8,8 @@
     <string name="result">Result</string>
     <string name="see_results_here">You will see results here</string>
     <string name="clear_history">Clear history</string>
+    <string name="no_history_text">Your steps are invisible.\nHistory is saved as you clear your translation</string>
+    <string name="language_autodetection">Language autodetection</string>
+    <string name="autodetect">Autodetect</string>
+    <string name="bookmark_saved">Bookmark saved</string>
 </resources>
