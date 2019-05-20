@@ -8,6 +8,10 @@
     android:orientation="vertical"
     android:weightSum="100">
 
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
+
     <LinearLayout
         android:id="@+id/translation_languages_holder"
         android:layout_width="match_parent"
@@ -16,23 +20,28 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/input_lang_choose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="40" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/swap"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_swap_horiz"
-            android:tint="?colorOnBackground" />
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text=""
+            app:icon="@drawable/ic_swap_horiz"
+            app:iconPadding="0dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/result_lang_choose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,45 +62,12 @@
             android:layout_marginStart="12dp"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/input_lang"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/input_lang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    tools:text="Detect language" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true">
-
-                    <ImageButton
-                        android:id="@+id/bookmark"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_star_outline"
-                        android:tint="?colorOnBackground" />
-
-                    <ImageButton
-                        android:id="@+id/delete_input"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_close"
-                        android:tint="?colorOnBackground" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="Detect language" />
 
             <EditText
                 android:id="@+id/input"
@@ -107,6 +83,48 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/action_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/done"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/done"
+            app:icon="@drawable/ic_done" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bookmark"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/save"
+            app:icon="@drawable/ic_star_outline" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_input"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/clear"
+            app:icon="@drawable/ic_close" />
+
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/primary_translation_holder"

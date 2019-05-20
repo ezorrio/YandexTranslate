@@ -3,15 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/topbar"
+        layout="@layout/topbar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/topbar" />
 
     <LinearLayout
         android:id="@+id/empty_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/topbar"
         android:background="?android:colorBackground"
         android:gravity="center"
         android:orientation="vertical"

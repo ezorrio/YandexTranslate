@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import io.ezorrio.yandextranslate.R
+import io.ezorrio.yandextranslate.activity.MainActivity
 import io.ezorrio.yandextranslate.adapter.LanguageAdapter
 import io.ezorrio.yandextranslate.model.room.AppLanguage
 import io.ezorrio.yandextranslate.model.view.LanguagesViewModel
@@ -31,7 +32,7 @@ class LanguageChooseFragment : Fragment() {
     lateinit var mLanguagesViewModel: LanguagesViewModel
     lateinit var mRecyclerView: RecyclerView
     lateinit var mAutodetectSwitch: SwitchMaterial
-    lateinit var mClose: ImageButton
+    lateinit var mClose: MaterialButton
     lateinit var mAdapter: LanguageAdapter
     lateinit var mDirection: String
 
@@ -61,7 +62,7 @@ class LanguageChooseFragment : Fragment() {
         mLanguagesViewModel.getAllLanguages().observe(this, Observer { languages: List<AppLanguage> -> mAdapter.data = languages })
 
         mRecyclerView = root.findViewById(R.id.list)
-        mRecyclerView.visibility = if (!mAutodetectSwitch.isChecked) View.VISIBLE else View.GONE
+        mRecyclerView.isEnabled = mDirection == DIRECTION_FROM && !mAutodetectSwitch.isChecked
         mRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         mRecyclerView.adapter = mAdapter
         mRecyclerView.addOnItemTouchListener(
@@ -78,5 +79,15 @@ class LanguageChooseFragment : Fragment() {
                     }
                 }))
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).setNavigationViewVisibility(false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as MainActivity).setNavigationViewVisibility(true)
     }
 }

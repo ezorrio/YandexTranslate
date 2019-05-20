@@ -11,12 +11,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import io.ezorrio.yandextranslate.R
@@ -38,6 +38,7 @@ import kotlin.coroutines.CoroutineContext
  */
 
 class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, CoroutineScope, View.OnFocusChangeListener {
+    private lateinit var mTopBar: ViewGroup
     private lateinit var mTranslationHolder: ViewGroup
     private lateinit var mLanguagesHolder: ViewGroup
     private lateinit var mInputLangChoose: Button
@@ -46,9 +47,10 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
     private lateinit var mTranslationLang: TextView
     private lateinit var mInput: EditText
     private lateinit var mTranslation: TextView
-    private lateinit var mErase: ImageButton
-    private lateinit var mSaveFave: ImageButton
-    private lateinit var mSwap: ImageButton
+    private lateinit var mErase: MaterialButton
+    private lateinit var mSaveFave: MaterialButton
+    private lateinit var mInputDone: MaterialButton
+    private lateinit var mSwap: MaterialButton
     private lateinit var mLanguages: LanguagesViewModel
     private lateinit var mHistory: HistoryViewModel
     private lateinit var mBookmarks: BookmarkViewModel
@@ -67,6 +69,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_translate, container, false)
+        mTopBar = root.findViewById(R.id.topbar)
 
         mLanguagesHolder = root.findViewById(R.id.translation_languages_holder)
         mInputLangChoose = root.findViewById(R.id.input_lang_choose)
@@ -77,6 +80,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
         mTranslation = root.findViewById(R.id.result)
 
         mInput = root.findViewById(R.id.input)
+        mInputDone = root.findViewById(R.id.done)
         mErase = root.findViewById(R.id.delete_input)
         mSaveFave = root.findViewById(R.id.bookmark)
         mSwap = root.findViewById(R.id.swap)
@@ -84,6 +88,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
         mInput.onFocusChangeListener = this
         mInputLangChoose.setOnClickListener(this)
         mTranslationLangChoose.setOnClickListener(this)
+        mInputDone.setOnClickListener(this)
         mErase.setOnClickListener(this)
         mSaveFave.setOnClickListener(this)
         mSwap.setOnClickListener(this)
@@ -142,15 +147,21 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        mLanguagesHolder.visibility = if (hasFocus) View.GONE else View.VISIBLE
+        setCompactView(hasFocus)
+    }
+
+    private fun setCompactView(needCompact: Boolean) {
+        mLanguagesHolder.visibility = if (needCompact) View.GONE else View.VISIBLE
+        mTopBar.visibility = if (needCompact) View.GONE else View.VISIBLE
     }
 
     @ObsoleteCoroutinesApi
     override fun onClick(v: View?) {
+        var input = mInput.text.toString().trim()
         when (v) {
             mErase -> {
                 launch {
-                    if (mInput.text.toString().trim().isEmpty()) {
+                    if (input.isEmpty()) {
                         return@launch
                     }
                     mHistory.saveHistory(AppHistory(originalData = mInput.text.toString().trim(),
@@ -171,6 +182,11 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
                 updateTranslationCard()
             }
 
+            mInputDone -> {
+                hideKeyboard()
+                mInput.clearFocus()
+            }
+
             mInputLangChoose -> {
                 val bundle = Bundle()
                 bundle.putString(LanguageChooseFragment.KEY_BUNDLE_DIRECTION, LanguageChooseFragment.DIRECTION_FROM)
@@ -184,10 +200,12 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
             }
 
             mSaveFave -> {
+                if (input.isEmpty()) {
+                    hideKeyboard()
+                    Snackbar.make(v, getString(R.string.bookmark_not_saved), LENGTH_SHORT).show()
+                    return
+                }
                 launch {
-                    if (mInput.text.toString().trim().isEmpty()) {
-                        return@launch
-                    }
                     mBookmarks.saveBookmark(AppBookmark(originalData = mInput.text.toString().trim(),
                             originalLang = AppPrefs.getDir(context!!)[0]!!,
                             translatedData = mTranslation.text.toString(),
@@ -205,7 +223,7 @@ class TranslationFragment : Fragment(), TextWatcher, View.OnClickListener, Corou
 
             if (input.isEmpty()) {
                 mTranslationHolder.visibility = View.GONE
-                mLanguagesHolder.visibility = View.VISIBLE
+                setCompactView(false)
                 return@launch
             }
 

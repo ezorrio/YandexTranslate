@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Translator</string>
-    <string name="translate">Translate</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="history">History</string>
     <string name="hint_translate">Input text to translate</string>
@@ -12,4 +11,13 @@
     <string name="language_autodetection">Language autodetection</string>
     <string name="autodetect">Autodetect</string>
     <string name="bookmark_saved">Bookmark saved</string>
+    <string name="bookmark_not_saved">Bookmark not saved. Make sure text is not empty</string>
+    <string name="close">Close</string>
+    <string name="translate">Translate</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="clear_input">Clear input</string>
+    <string name="done">Done</string>
+    <string name="star">Star</string>
+    <string name="clear">Clear</string>
+    <string name="save">Save</string>
 </resources>
